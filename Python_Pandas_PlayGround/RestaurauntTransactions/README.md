@@ -1,0 +1,1 @@
+This code uses the dataset containing restaurant transactions and gets the most popular items by time of day, in the following 6 categories: 1) breakfast (opening to 10am), 2) preLunch (between 10am and 12pm), 3) lunch (12-3pm), 4) postLunch (between 3p and 6pm) 5) dinner (6-8pm), and 6) lateDinner (8pm to close).
