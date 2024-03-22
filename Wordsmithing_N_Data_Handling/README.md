@@ -1,0 +1,1 @@
+These are a couple projects where I utilized python for data handling and file handling.

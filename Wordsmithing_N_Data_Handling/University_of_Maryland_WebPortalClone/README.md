@@ -1,0 +1,1 @@
+This program is a clone of University of Maryland's web portal, "TESTUDO" that offers the basic funtionality of enrolling and unenrolling for classes, paying bills and so much more.

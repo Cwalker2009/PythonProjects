@@ -1,0 +1,1 @@
+This program converts temperatures between Celsius and Fahrenheit.
