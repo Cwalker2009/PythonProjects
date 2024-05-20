@@ -1,0 +1,1 @@
+Welcome to Algoryhtm a simple application that provides music reccomendations based on user inputs. 
