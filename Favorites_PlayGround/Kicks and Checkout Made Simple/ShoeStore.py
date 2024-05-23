@@ -1,55 +1,41 @@
 class Shoes:
-  def __init__(self, brand, category, name, price):# Defines the constructor for the Shoes class
+  def __init__(self, brand, category, name, price,stock):# Defines the constructor for the Shoes class
     self.brand = brand
     self.category = category
     self.price = price
     self.name = name
-  def getBrand(self):# Defines a method to return the brand of the shoe
-    return "This is a {} shoe".format(self.brand)
+    self.stock = stock
+  def get_info(self): 
+    return {
+            "brand": self.brand,
+            "category": self.category,
+            "name": self.name,
+            "price": self.price,
+            "stock": self.stock,
+            "is_expensive": "Expensive" if self.price >= 250 else "Not Expensive",
+        }
 
-  def getCategory(self):# Defines a method to return the category of the shoe
-    return "This is a {} shoe".format(self.category)
-
-  def getName(self): # Defines a method to return the name of the shoe
-    return self.name
-
-  def getPrice(self):# Defines a method to return the price of the shoe
-    return "This shoe costs {}".format(self.price)
-  def isExpensive(self):# Defines a method to check if the shoe is expensive
-      if self.price >= 250:
-        return "The {} {} are expensive".format(self.brand,self.name)
-
-      elif self.price <= 250:
-        return "The {} {} are not expensive".format(self.brand,self.name)
-
+def Create_Shoe(brand, category, name, price,stock):
+  return Shoes(brand, category, name, price,stock)
       
-Jordan1 = {
-  "name":"Jordan 1",
-  "brand":"Jordan",
-  "price":145,
-  "stock":30,  
-  "category":"Basketball"
+jordan_shoes = {
+  "Jordan 1":Create_Shoe("Jordan", "Basketball", "Jordan 1", 145, 30)
 }
-NewBalance990 = {
-  "name":"New Balance 990",
-  "brand":"New Balance",
-  "price":185,
-  "stock":8,
-  "category":"Running"
+new_balance_shoes = {
+  "New Balance 990": Create_Shoe("New Balance", "Running", "New Balance 990", 185, 56)
 }
-YeezyBoost700 = {
-  "name":"Yeezy Boost 700",
-  "brand":"Adidas",
-  "price":350,
-  "stock":10,
-  "category":"Running"
+yeezy_shoes = {
+  "Yeezy Boost 700":Create_Shoe("Adidas", "Running", "Yeezy Boost 700", 350, 10)
+}
+
+shoes = {
+  "Jordans":jordan_shoes,
+  "New Balance":new_balance_shoes,
+  "Yeezys":yeezy_shoes
 }
 
 DTLR = {
-  "Yeezys":YeezyBoost700,
-  "Jordans":Jordan1,
-  "NB":NewBalance990,
-  "Inventory_Value":sum(shoe["price"] * shoe["stock"] for shoe in [Jordan1,NewBalance990,YeezyBoost700])
+  "Inventory_Value":sum(shoe.price * shoe.stock for shoe_dict in shoes.values() for shoe in shoe_dict.values())
 }
 
 
@@ -62,56 +48,54 @@ def main():
     else:
       break
       
-  options(budget)
+  options(budget,shoes)
 
 
 
-def options(budget):
-  tempDict = {145:"Jordan 1s",
-              185:"New Balance990s",
-              350:"YeezyBoost700s"
-             }
-  
-  if budget >= min(tempDict):
+def options(budget, all_shoes):
+  affordable_shoes = []
+  for brand,shoe_dict in all_shoes.items():
+    for shoe in shoe_dict.values():
+      if budget >= shoe.price:
+        affordable_shoes.append(shoe)
+  if len(affordable_shoes) > 0:
     print("Reggie:Uhhh based on your budget I think you can get..." )
-  for i in tempDict:
-    if i <= budget:
-      shoes = Shoes("Shoes","Feet",tempDict[i],i)# Creates a shoe object with placeholders for brand and category (fix needed)
-      print(tempDict[i], "for $", i, "\n",shoes.isExpensive())
-
-    elif budget < min(tempDict) :
-      print("Reggie: You cannot buy anything in our store we have nothing that cheap")
-      return main()
-  CheckOut(budget)
+    for shoes in affordable_shoes:
+        shoe_info = shoes.get_info()
+        print(f"{shoe_info['name']} for ${shoe_info['price']} {shoe_info['is_expensive']}")
+  else:
+    print("Reggie: You cannot buy anything in our store we have nothing that cheap")
+    return main()
+  CheckOut(budget, all_shoes)
 
 
-def CheckOut(budget):
-  # Classify the shoe as expensive or not
+def CheckOut(budget, all_shoes):
   #first we need to know what shoe the user wants
   #Once we get the shoe we want to look through the shoe dictionary and figure out the price and then subtract that price from the total amount of inventory
-  print("Reggie: so what item would you like to purchase?\nTip: Use the keyword to answer Reggie. \nKeywords: \n'Yeezys' = YeezyBoost700s' \n 'Jordans' = Jordan1s' \n 'NB' = 'NewBalance990s' ")
-  checkout = input("Me: ")
-  if checkout == "Yeezys":
-    cost = DTLR[checkout]["price"]
-    wallet = budget - cost 
-    inventory = (DTLR["Inventory_Value"]) - cost
-    print("Me: Welp I only have $", wallet, "left")
-    print("Reggie: Thanks for your purchase! Our store now has an inventory value of $", inventory, "\nReggie:...Uhh I don't know why I told you that hehehe.")
-  elif checkout == "Jordans":
-    cost = DTLR[checkout]["price"]
-    wallet = budget - cost 
-    inventory = (DTLR["Inventory_Value"]) - cost
-    print("Me: Welp I only have $", wallet, "left")
-    print("Reggie: Thanks for your purchase! Our store now has an inventory value of $", inventory, "\nReggie:...Uhh I don't know why I told you that hehehe.")
-  elif checkout == "NB":
-    cost = DTLR[checkout]["price"]
-    wallet = budget - cost 
-    inventory = (DTLR["Inventory_Value"]) - cost
-    print("Me: Welp now I only have $", wallet, "left")
-    print("Reggie: Thanks for your purchase! Our store now has an inventory value of $", inventory, "\nReggie:...Uhh I don't know why I told you that hehehe.")
-  
-  
+  print("Reggie: so what item would you like to purchase?\nTip: Use the keyword to answer Reggie. \nKeywords:")
+  for brand, shoe_dict in all_shoes.items():
+    for shoe in shoe_dict.values():
+      print(f"brand:{brand} | shoe name:{shoe.name}")
+      break
+  user_brand_selection = input("Reggie: First Select a brand.\nEnter the shoe brand: ")
+  user_shoe_selection = input("Reggie: Splendid! Now tell me the name of the shoe.\nEnter the shoe name: ")
+
+  selected_shoe_dict = shoes.get(user_brand_selection)
+  if selected_shoe_dict:
+    selected_shoe = selected_shoe_dict.get(user_shoe_selection)
+    if selected_shoe:
+      cost = selected_shoe.price
+      wallet = budget - cost 
+      selected_shoe.stock -= 1
+      inventory = (DTLR["Inventory_Value"]) - cost
+      print(f"Me: Welp I managed to save ${wallet} in my wallet")
+      print(f"Reggie: Thanks for your purchase! Our store now has an inventory value of ${inventory} \nReggie:...Uhh I don't know why I told you that hehehe.")
+    else:
+       print("Reggie: That shoe may not exist orrr you spelled something wrong." )
     
     
-  
+    return DTLR
+  else:
+    print(f"Reggie: Wait a minute I am not sure what brand {user_brand_selection} is please try again using the key words" )
+    return CheckOut(budget,all_shoes)
 main()
