@@ -14,7 +14,7 @@ class Shoes:
             "stock": self.stock,
             "is_expensive": "Expensive" if self.price >= 250 else "Not Expensive",
         }
-
+ 
 def Create_Shoe(brand, category, name, price,stock):
   return Shoes(brand, category, name, price,stock)
       
