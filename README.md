@@ -1,4 +1,5 @@
-Greetings and thanks for stopping by! I am Osmund Fosu Rockson.
+Greetings I am Osmund Fosu Rockson! 
 These are a few of my projects in the python programming language. 
+Thanks for stopping by! 
 
 LinkedIn: http://linkedin.com/in/osmfr
